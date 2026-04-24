@@ -1,6 +1,5 @@
 # TaskFlow — Mini SaaS Task Manager
 
-A production-ready, full-stack Task Management application built for the **Full Stack Developer Intern Screening Test**.
 
 ---
 
@@ -61,7 +60,7 @@ A production-ready, full-stack Task Management application built for the **Full 
 
 ### 1. Clone the repository
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/mrajeshmanikala-droid/taskflow.git
 cd taskflow
 ```
 
