@@ -1,0 +1,47 @@
+[
+  {
+    "title": "Design SaaS Landing Page",
+    "description": "Create a high-fidelity mockup in Figma focusing on Indigo theme.",
+    "status": "completed"
+  },
+  {
+    "title": "Implement JWT Auth",
+    "description": "Setup secure signup and login routes using Express and JSON Web Tokens.",
+    "status": "completed"
+  },
+  {
+    "title": "Integrate SQLite Database",
+    "description": "Migrate models from Postgres to SQLite for zero-config local development.",
+    "status": "completed"
+  },
+  {
+    "title": "Weekly Grocery Shopping",
+    "description": "Buy organic vegetables, almond milk, and whole grain bread.",
+    "status": "pending"
+  },
+  {
+    "title": "Morning Gym Session",
+    "description": "45 minutes of cardio and 20 minutes of strength training.",
+    "status": "completed"
+  },
+  {
+    "title": "Book Dentist Appointment",
+    "description": "Call Dr. Smith for the biannual cleaning session.",
+    "status": "pending"
+  },
+  {
+    "title": "Plan Weekend Trip",
+    "description": "Research cabin rentals in the mountains.",
+    "status": "pending"
+  },
+  {
+    "title": "Fix Mobile UI Bugs",
+    "description": "Resolve layout shifting issues on smaller screen sizes.",
+    "status": "pending"
+  },
+  {
+    "title": "Quarterly Tax Filing",
+    "description": "Review all financial statements and submit quarterly tax returns.",
+    "status": "pending"
+  }
+]

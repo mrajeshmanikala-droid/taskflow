@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", "system-ui", "sans-serif";
+  
+  /* Primary Light Green (Emerald) Branding */
+  --color-primary-50: #ecfdf5;
+  --color-primary-100: #d1fae5;
+  --color-primary-200: #a7f3d0;
+  --color-primary-300: #6ee7b7;
+  --color-primary-400: #34d399;
+  --color-primary-500: #10b981;
+  --color-primary-600: #059669;
+  --color-primary-700: #047857;
+  --color-primary-800: #065f46;
+  --color-primary-900: #064e3b;
+
+  --shadow-premium: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-notion: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
+}
+
+/* ====================== */
+/*    LIGHT MODE (default) */
+/* ====================== */
+:root {
+  font-family: 'Inter', sans-serif;
+  --bg-page: #ffffff;
+  --bg-sidebar: rgba(249, 250, 251, 0.5);
+  --bg-card: #ffffff;
+  --bg-card-hover: #f9fafb;
+  --bg-input: #f9fafb;
+  --bg-header: rgba(255, 255, 255, 0.8);
+  --border-color: #e5e7eb;
+  --border-light: #f1f5f9;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --text-faint: #cbd5e1;
+  --scrollbar-color: #e5e7eb;
+}
+
+/* ====================== */
+/*       DARK MODE        */
+/* ====================== */
+[data-theme="dark"] {
+  --bg-page: #0f172a;
+  --bg-sidebar: rgba(15, 23, 42, 0.95);
+  --bg-card: #1e293b;
+  --bg-card-hover: #334155;
+  --bg-input: #1e293b;
+  --bg-header: rgba(15, 23, 42, 0.8);
+  --border-color: #334155;
+  --border-light: #1e293b;
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted: #64748b;
+  --text-faint: #475569;
+  --scrollbar-color: #334155;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Notion-style Container */
+.notion-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.notion-card:hover {
+  background: var(--bg-card-hover);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-color);
+  border-radius: 10px;
+}
+
+/* Animations */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out forwards;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+.animate-shake {
+  animation: shake 0.2s ease-in-out 0s 2;
+}
+
+.sidebar-link-active {
+  background-color: var(--color-primary-50);
+  color: var(--color-primary-600);
+  font-weight: 600;
+}
+
+/* ====================== */
+/*  DARK MODE OVERRIDES   */
+/* ====================== */
+[data-theme="dark"] .notion-card {
+  background: var(--bg-card);
+  border-color: var(--border-color);
+}
+[data-theme="dark"] .notion-card:hover {
+  background: var(--bg-card-hover);
+}

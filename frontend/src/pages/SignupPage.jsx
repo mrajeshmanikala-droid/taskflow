@@ -1,0 +1,130 @@
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { UserPlus, Mail, Lock, User as UserIcon, Loader2, Sparkles } from 'lucide-react';
+
+const SignupPage = () => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { signup } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setIsSubmitting(true);
+    try {
+      await signup(name, email, password);
+      navigate('/dashboard');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Something went wrong during registration.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-[#f8fafc] p-6 selection:bg-primary-100">
+      {/* Background Orbs */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[20%] -left-[5%] w-[45%] h-[45%] bg-emerald-100 rounded-full blur-[130px] opacity-40"></div>
+        <div className="absolute -bottom-[10%] -right-[10%] w-[40%] h-[40%] bg-primary-100 rounded-full blur-[110px] opacity-50"></div>
+      </div>
+
+      <div className="w-full max-w-[440px] animate-fade-in relative z-10">
+        <div className="glass-panel p-10 rounded-[32px] shadow-premium">
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 text-white shadow-lg shadow-primary-200 mb-6 transform hover:rotate-3 transition-transform">
+              <UserPlus className="w-8 h-8" />
+            </div>
+            <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Create Account</h1>
+            <p className="text-slate-500 mt-3 font-medium flex items-center justify-center gap-2">
+              <Sparkles className="w-4 h-4 text-primary-500" />
+              Join the productivity revolution
+            </p>
+          </div>
+
+          {error && (
+            <div className="bg-red-50 border border-red-100 text-red-600 p-4 rounded-2xl text-sm mb-8 flex items-center gap-3">
+              <div className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse"></div>
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-slate-700 ml-1">Full Name</label>
+              <div className="relative group">
+                <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 group-focus-within:text-primary-600 transition-colors" />
+                <input
+                  type="text"
+                  placeholder="John Doe"
+                  className="w-full pl-12 pr-4 py-4 bg-white/50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary-50 focus:border-primary-600 outline-none transition-all font-medium placeholder:text-slate-400"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-slate-700 ml-1">Email Address</label>
+              <div className="relative group">
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 group-focus-within:text-primary-600 transition-colors" />
+                <input
+                  type="email"
+                  placeholder="john@example.com"
+                  className="w-full pl-12 pr-4 py-4 bg-white/50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary-50 focus:border-primary-600 outline-none transition-all font-medium placeholder:text-slate-400"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-slate-700 ml-1">Password</label>
+              <div className="relative group">
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 group-focus-within:text-primary-600 transition-colors" />
+                <input
+                  type="password"
+                  placeholder="••••••••"
+                  className="w-full pl-12 pr-4 py-4 bg-white/50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary-50 focus:border-primary-600 outline-none transition-all font-medium placeholder:text-slate-400"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 rounded-2xl shadow-xl hover:shadow-2xl transition-all flex items-center justify-center gap-3 active:scale-[0.98]"
+            >
+              {isSubmitting ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (
+                <span>Create Account</span>
+              )}
+            </button>
+          </form>
+
+          <div className="mt-10 pt-8 border-t border-slate-100 text-center">
+            <p className="text-slate-500 font-medium">
+              Already have an account?{' '}
+              <Link to="/login" className="text-primary-600 font-bold hover:text-primary-700 hover:underline transition-all">
+                Sign in instead
+              </Link>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default SignupPage;
