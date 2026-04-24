@@ -1,27 +1,1 @@
-const { Sequelize } = require('sequelize');
-const path = require('path');
-require('dotenv').config();
-
-const dbPath = path.join(__dirname, '../database.sqlite');
-console.log('📂 Database Path:', dbPath);
-
-const sequelize = new Sequelize({
-  dialect: 'sqlite',
-  storage: dbPath,
-  logging: false,
-});
-
-const connectDB = async () => {
-  try {
-    await sequelize.authenticate();
-    console.log('✅ Database Connected (SQLite)...');
-    
-    await sequelize.sync();
-    console.log('✅ Models Synchronized.');
-  } catch (err) {
-    console.error('❌ Database Connection Error!');
-    console.error(err.message);
-  }
-};
-
-module.exports = { sequelize, connectDB };
+const { Sequelize } = require('sequelize');const path = require('path');require('dotenv').config();const dbPath = path.join(__dirname, '../database.sqlite');console.log('📂 Database Path:', dbPath);const sequelize = new Sequelize({  dialect: 'sqlite',  storage: dbPath,  logging: false,});const connectDB = async () => {  try {    await sequelize.authenticate();    console.log('✅ Database Connected (SQLite)...');    await sequelize.sync();    console.log('✅ Models Synchronized.');  } catch (err) {    console.error('❌ Database Connection Error!');    console.error(err.message);  }};module.exports = { sequelize, connectDB };

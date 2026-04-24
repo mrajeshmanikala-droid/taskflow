@@ -1,76 +1,1 @@
-const Task = require('../models/Task');
-
-const getTasks = async (req, res) => {
-  try {
-    const tasks = await Task.findAll({ where: { userId: req.user.id } });
-    res.json(tasks);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-
-const createTask = async (req, res) => {
-  const { title, description, dueDate, priority } = req.body;
-
-  if (!title || title.trim() === '') {
-    return res.status(400).json({ message: 'Task title is required' });
-  }
-
-  try {
-    const task = await Task.create({
-      title: title.trim(),
-      description,
-      dueDate: req.body.dueDate,
-      priority,
-      userId: req.user.id
-    });
-    res.status(201).json(task);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// @desc    Update task status
-// @route   PUT /api/tasks/:id
-// @access  Private
-const updateTask = async (req, res) => {
-  try {
-    const task = await Task.findOne({ where: { id: req.params.id, userId: req.user.id } });
-
-    if (task) {
-      task.status = req.body.status || task.status;
-      task.title = req.body.title ? req.body.title.trim() : task.title;
-      task.description = req.body.description !== undefined ? req.body.description : task.description;
-      task.dueDate = req.body.dueDate !== undefined ? req.body.dueDate : task.dueDate;
-      task.priority = req.body.priority || task.priority;
-
-      const updatedTask = await task.save();
-      res.json(updatedTask);
-    } else {
-      res.status(404).json({ message: 'Task not found' });
-    }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// @desc    Delete task
-// @route   DELETE /api/tasks/:id
-// @access  Private
-const deleteTask = async (req, res) => {
-  try {
-    const task = await Task.findOne({ where: { id: req.params.id, userId: req.user.id } });
-
-    if (task) {
-      await task.destroy();
-      res.json({ message: 'Task removed' });
-    } else {
-      res.status(404).json({ message: 'Task not found' });
-    }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-module.exports = { getTasks, createTask, updateTask, deleteTask };
+const Task = require('../models/Task');const getTasks = async (req, res) => {  try {    const tasks = await Task.findAll({ where: { userId: req.user.id } });    res.json(tasks);  } catch (error) {    res.status(500).json({ message: error.message });  }};const createTask = async (req, res) => {  const { title, description, dueDate, priority } = req.body;  if (!title || title.trim() === '') {    return res.status(400).json({ message: 'Task title is required' });  }  try {    const task = await Task.create({      title: title.trim(),      description,      dueDate: req.body.dueDate,      priority,      userId: req.user.id    });    res.status(201).json(task);  } catch (error) {    res.status(500).json({ message: error.message });  }};const updateTask = async (req, res) => {  try {    const task = await Task.findOne({ where: { id: req.params.id, userId: req.user.id } });    if (task) {      task.status = req.body.status || task.status;      task.title = req.body.title ? req.body.title.trim() : task.title;      task.description = req.body.description !== undefined ? req.body.description : task.description;      task.dueDate = req.body.dueDate !== undefined ? req.body.dueDate : task.dueDate;      task.priority = req.body.priority || task.priority;      const updatedTask = await task.save();      res.json(updatedTask);    } else {      res.status(404).json({ message: 'Task not found' });    }  } catch (error) {    res.status(500).json({ message: error.message });  }};const deleteTask = async (req, res) => {  try {    const task = await Task.findOne({ where: { id: req.params.id, userId: req.user.id } });    if (task) {      await task.destroy();      res.json({ message: 'Task removed' });    } else {      res.status(404).json({ message: 'Task not found' });    }  } catch (error) {    res.status(500).json({ message: error.message });  }};module.exports = { getTasks, createTask, updateTask, deleteTask };

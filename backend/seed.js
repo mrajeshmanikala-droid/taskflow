@@ -1,62 +1,1 @@
-const fs = require('fs');
-const path = require('path');
-const { connectDB, sequelize } = require('./config/db');
-const User = require('./models/User');
-const Task = require('./models/Task');
-
-const seedData = async () => {
-  try {
-    await connectDB();
-
-    // Load sample data from JSON files
-    const usersData = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'sampleUsers.json'), 'utf-8'));
-    const tasksData = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'sampleTasks.json'), 'utf-8'));
-
-    console.log('--- Seeding Process Started ---');
-
-    // 1. Create/Sync Users
-    for (const u of usersData) {
-      let user = await User.findOne({ where: { email: u.email } });
-      if (!user) {
-        await User.create(u);
-        console.log(`✅ Created User: ${u.name}`);
-      } else {
-        console.log(`ℹ️ User already exists: ${u.name}`);
-      }
-    }
-
-    // 2. Get all users and assign tasks
-    const allUsers = await User.findAll();
-    console.log(`Found ${allUsers.length} total users in DB. Assigning sample tasks...`);
-
-    for (const user of allUsers) {
-      // Clear existing tasks to ensure fresh state (optional, but good for "fixing" things)
-      await Task.destroy({ where: { userId: user.id } });
-
-      for (const t of tasksData) {
-        const randomDays = Math.floor(Math.random() * 7);
-        const dueDate = new Date();
-        dueDate.setDate(dueDate.getDate() + randomDays);
-
-        await Task.create({
-          ...t,
-          dueDate: dueDate.toISOString(),
-          userId: user.id
-        });
-      }
-      console.log(`✅ Tasks seeded for: ${user.name} (${user.email})`);
-    }
-
-    const finalTaskCount = await Task.count();
-    console.log(`\n--- Seeding Complete ---`);
-    console.log(`Total Users: ${allUsers.length}`);
-    console.log(`Total Tasks in DB: ${finalTaskCount}`);
-
-    process.exit(0);
-  } catch (err) {
-    console.error('❌ Seeding Error:', err.message);
-    process.exit(1);
-  }
-};
-
-seedData();
+const fs = require('fs');const path = require('path');const { connectDB, sequelize } = require('./config/db');const User = require('./models/User');const Task = require('./models/Task');const seedData = async () => {  try {    await connectDB();    const usersData = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'sampleUsers.json'), 'utf-8'));    const tasksData = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'sampleTasks.json'), 'utf-8'));    console.log('--- Seeding Process Started ---');    for (const u of usersData) {      let user = await User.findOne({ where: { email: u.email } });      if (!user) {        await User.create(u);        console.log(`✅ Created User: ${u.name}`);      } else {        console.log(`ℹ️ User already exists: ${u.name}`);      }    }    const allUsers = await User.findAll();    console.log(`Found ${allUsers.length} total users in DB. Assigning sample tasks...`);    for (const user of allUsers) {      await Task.destroy({ where: { userId: user.id } });      for (const t of tasksData) {        const randomDays = Math.floor(Math.random() * 7);        const dueDate = new Date();        dueDate.setDate(dueDate.getDate() + randomDays);        await Task.create({          ...t,          dueDate: dueDate.toISOString(),          userId: user.id        });      }      console.log(`✅ Tasks seeded for: ${user.name} (${user.email})`);    }    const finalTaskCount = await Task.count();    console.log(`\n--- Seeding Complete ---`);    console.log(`Total Users: ${allUsers.length}`);    console.log(`Total Tasks in DB: ${finalTaskCount}`);    process.exit(0);  } catch (err) {    console.error('❌ Seeding Error:', err.message);    process.exit(1);  }};seedData();
